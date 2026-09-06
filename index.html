@@ -56,7 +56,6 @@
     .global-bg-grid {
       position: absolute; top: 0; left: -50%; width: 200%; height: 100%;
       background-image: 
-        /* تم زيادة الوضوح هنا لـ 0.09 بدلاً من 0.04 */
         linear-gradient(rgba(37, 99, 235, 0.09) 1px, transparent 1px),
         linear-gradient(90deg, rgba(37, 99, 235, 0.09) 1px, transparent 1px);
       background-size: 40px 40px;
@@ -73,7 +72,6 @@
     .global-bg-chart {
       position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
       display: flex; align-items: flex-end; justify-content: space-around;
-      /* تم زيادة الوضوح هنا لـ 0.12 بدلاً من 0.06 */
       padding: 0 5%; opacity: 0.12; 
     }
     [data-theme="dark"] .global-bg-chart { opacity: 0.08; }
@@ -277,13 +275,21 @@
     @media(max-width:850px) {
       .hero-grid, .about, .project-grid, .education { grid-template-columns: 1fr; }
       .hero { padding-top: 55px; }
-      .hero-card { max-width: 520px; margin: auto; transform: none; }
+      
+      /* --- التعديل هنا: الصورة هتظهر فوق وبحجم متناسق --- */
+      .hero-card { 
+        order: -1; 
+        max-width: 280px; 
+        margin: 0 auto 30px auto; 
+        transform: none; 
+      }
+      
       .skills-grid { grid-template-columns: 1fr; }
       .services-grid { grid-template-columns: 1fr 1fr; }
       .section-head { display: block; }
       .section-note { margin-top: 12px; }
       .project-image { min-height: 300px; }
-      .global-bg-chart { opacity: 0.08; } /* تعديل طفيف للموبايل */
+      .global-bg-chart { opacity: 0.08; }
     }
     @media(max-width:620px) {
       .container { width: min(calc(100% - 28px), var(--max)); }
@@ -547,7 +553,7 @@
     const sunIcon = document.getElementById('sun-icon');
     const moonIcon = document.getElementById('moon-icon');
     
-const currentTheme = localStorage.getItem('theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "dark");    
+    const currentTheme = localStorage.getItem('theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "dark");    
     if (currentTheme === 'dark') {
       document.body.setAttribute('data-theme', 'dark');
       sunIcon.style.display = 'block';
