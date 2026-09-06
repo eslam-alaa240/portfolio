@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Eslam Alaa — Data Analyst Portfolio">
+  <title>Eslam Alaa | Data Analyst</title>
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --surface: #ffffff;
+      --ink: #10233f;
+      --muted: #61708a;
+      --accent: #2563eb;
+      --accent-2: #0ea5e9;
+      --line: #e4eaf2;
+      --soft: #eef5ff;
+      --shadow: 0 18px 50px rgba(16,35,63,.08);
+      --nav-bg: rgba(247,249,252,.88);
+      --radius: 24px;
+      --max: 1120px;
+      --transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* --- Dark Mode Variables --- */
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --ink: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #3b82f6;
+      --accent-2: #38bdf8;
+      --line: #334155;
+      --soft: #334155;
+      --shadow: 0 18px 50px rgba(0,0,0,0.4);
+      --nav-bg: rgba(15,23,42,.88);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6;
+      overflow-x: hidden;
+      transition: var(--transition);
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { width: min(calc(100% - 40px), var(--max)); margin: auto; position: relative; z-index: 2; }
+    
+    /* --- Global Animated Background --- */
+    .global-bg {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .global-bg-grid {
+      position: absolute; top: 0; left: -50%; width: 200%; height: 100%;
+      background-image: 
+        /* تم زيادة الوضوح هنا لـ 0.09 بدلاً من 0.04 */
+        linear-gradient(rgba(37, 99, 235, 0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37, 99, 235, 0.09) 1px, transparent 1px);
+      background-size: 40px 40px;
+      transform: perspective(600px) rotateX(60deg) translateY(-50px) translateZ(-200px);
+      animation: gridMove 20s linear infinite;
+    }
+    [data-theme="dark"] .global-bg-grid { opacity: 0.4; }
+
+    @keyframes gridMove {
+      0% { transform: perspective(600px) rotateX(60deg) translateY(0) translateZ(-200px); }
+      100% { transform: perspective(600px) rotateX(60deg) translateY(40px) translateZ(-200px); }
+    }
+
+    .global-bg-chart {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
+      display: flex; align-items: flex-end; justify-content: space-around;
+      /* تم زيادة الوضوح هنا لـ 0.12 بدلاً من 0.06 */
+      padding: 0 5%; opacity: 0.12; 
+    }
+    [data-theme="dark"] .global-bg-chart { opacity: 0.08; }
+    
+    .bg-bar {
+      width: 8%; background: var(--accent); border-radius: 12px 12px 0 0;
+      animation: bgChartPulse 4s ease-in-out infinite alternate;
+      transform-origin: bottom;
+    }
+    .bg-bar:nth-child(1) { height: 30%; animation-delay: 0s; }
+    .bg-bar:nth-child(2) { height: 70%; animation-delay: -1s; }
+    .bg-bar:nth-child(3) { height: 45%; animation-delay: -2s; }
+    .bg-bar:nth-child(4) { height: 90%; animation-delay: -0.5s; }
+    .bg-bar:nth-child(5) { height: 60%; animation-delay: -1.5s; }
+    .bg-bar:nth-child(6) { height: 80%; animation-delay: -3s; }
+    
+    @keyframes bgChartPulse {
+      0% { transform: scaleY(0.7); }
+      100% { transform: scaleY(1.1); }
+    }
+
+    /* Navigation */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--nav-bg); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      transition: var(--transition);
+    }
+    .nav-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; }
+    .brand { font-weight: 800; letter-spacing: -.03em; font-size: 1.1rem; }
+    .brand span { color: var(--accent); }
+    
+    .nav-right { display: flex; align-items: center; gap: 28px; }
+    .links { display: flex; gap: 28px; font-size: .92rem; color: var(--muted); }
+    .links a { transition: color 0.3s ease; position: relative; }
+    .links a:hover { color: var(--accent); }
+    .links a::after {
+      content: ''; position: absolute; width: 0; height: 2px;
+      bottom: -4px; left: 0; background-color: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .links a:hover::after { width: 100%; }
+
+    /* Dark Mode Toggle Button */
+    .theme-toggle {
+      background: var(--soft); border: 1px solid var(--line);
+      color: var(--accent); cursor: pointer; border-radius: 50%;
+      width: 40px; height: 40px; display: grid; place-items: center;
+      transition: var(--transition);
+    }
+    .theme-toggle:hover { transform: scale(1.05); }
+    .theme-toggle svg { width: 20px; height: 20px; fill: currentColor; }
+
+    /* Hero Section */
+    .hero { padding: 86px 0 70px; position: relative; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 64px; align-items: center; position: relative; z-index: 2; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      color: var(--accent); font-weight: 750; font-size: .88rem; margin-bottom: 18px;
+    }
+    .eyebrow:before { content: ""; width: 28px; height: 2px; background: var(--accent); border-radius: 2px; }
+    h1 { font-size: clamp(3rem, 7vw, 5.8rem); line-height: .95; letter-spacing: -.065em; margin-bottom: 22px; }
+    h1 span { color: var(--accent); }
+    .hero-copy { font-size: 1.1rem; color: var(--muted); max-width: 620px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 12px 18px; border-radius: 12px; font-weight: 700; font-size: .92rem;
+      border: 1px solid var(--line); transition: all .3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .btn-primary:hover { transform: translateY(-4px); background: var(--accent); border-color: var(--accent); box-shadow: 0 10px 20px rgba(37,99,235,0.2); color: white; }
+    .btn-light { background: var(--surface); color: var(--ink); }
+    .btn-light:hover { transform: translateY(-4px); border-color: var(--accent); color: var(--accent); box-shadow: 0 10px 20px rgba(16,35,63,0.05); }
+    
+    .hero-card {
+      position: relative; background: var(--surface); border: 1px solid var(--line);
+      border-radius: 32px; padding: 14px; box-shadow: var(--shadow); transform: rotate(1.2deg);
+      transition: transform 0.5s ease;
+    }
+    .hero-card:hover { transform: rotate(0deg) scale(1.02); }
+    .hero-card img { border-radius: 24px; width: 100%; aspect-ratio: 4/5; object-fit: cover; }
+    
+    /* Sections General */
+    section { padding: 78px 0; position: relative; z-index: 2; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 34px; }
+    .kicker { color: var(--accent); font-size: .8rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    h2 { font-size: clamp(2.1rem, 4vw, 3.5rem); letter-spacing: -.055em; line-height: 1.05; }
+    
+    .about { display: grid; grid-template-columns: .72fr 1.28fr; gap: 24px; align-items: stretch; position: relative; z-index: 2; }
+    .about-label, .about-text, .skill-card, .project, .edu-card {
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0,0,0,.045); transition: var(--transition);
+    }
+    .about-label { padding: 34px; font-size: 1.6rem; font-weight: 800; letter-spacing: -.03em; position: relative; overflow: hidden; }
+    .about-label span { display: block; color: var(--accent); }
+    .about-label::after {
+      content: ''; position: absolute; width: 100px; height: 100px;
+      background: var(--accent); filter: blur(60px); opacity: 0.15;
+      bottom: -20px; right: -20px; border-radius: 50%;
+    }
+    .about-text { padding: 34px; font-size: 1.05rem; color: var(--muted); }
+    .about-text strong { color: var(--ink); }
+    
+    /* Skills & Services */
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .skill-card { padding: 28px; transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease; }
+    .skill-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+    .skill-card h3 { font-size: 1.03rem; margin-bottom: 18px; }
+    .skill-list { display: flex; flex-wrap: wrap; gap: 9px; }
+    .tag {
+      padding: 8px 11px; border-radius: 10px; background: var(--soft);
+      color: var(--accent); font-weight: 650; font-size: .87rem; border: 1px solid var(--line);
+      transition: all 0.2s ease;
+    }
+    .tag:hover { background: var(--accent); color: white; border-color: var(--accent); transform: scale(1.05); }
+    
+    /* Projects */
+    .project { overflow: hidden; margin-bottom: 22px; transition: all 0.4s ease; }
+    .project:hover { transform: translateY(-4px); border-color: var(--accent); }
+    .project-grid { display: grid; grid-template-columns: 1fr 1fr; }
+    .project-content { padding: 36px; display: flex; flex-direction: column; justify-content: center; }
+    .project-number { color: var(--accent); font-weight: 800; font-size: .8rem; letter-spacing: .12em; }
+    .project h3 { font-size: clamp(1.55rem, 3vw, 2.25rem); letter-spacing: -.045em; margin: 8px 0 16px; }
+    .project p { color: var(--muted); }
+    .project-meta { margin-top: 24px; }
+    .meta-row { margin-top: 8px; color: var(--muted); }
+    .meta-row strong { color: var(--ink); }
+    .project-link { display: inline-flex; margin-top: 25px; color: var(--accent); font-weight: 800; align-items: center; gap: 5px; transition: gap 0.3s ease; }
+    .project-link:hover { gap: 10px; }
+    .project-image { padding: 18px; display: flex; align-items: center; background: var(--soft); overflow: hidden; transition: var(--transition);}
+    .project-image img { width: 100%; height: 100%; object-fit: contain; border-radius: 15px; background: white; transition: transform 0.5s ease; }
+    .project:hover .project-image img { transform: scale(1.03); }
+
+    /* Education & Services */
+    .education { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .edu-card { padding: 30px; transition: transform 0.3s ease, border-color 0.3s ease; }
+    .edu-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+    .edu-card .date { color: var(--accent); font-size: .82rem; font-weight: 800; margin-bottom: 10px; }
+    .edu-card h3 { font-size: 1.25rem; margin-bottom: 5px; }
+    .edu-card p { color: var(--muted); }
+
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .service-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); transition: transform .35s ease, border-color .35s ease; }
+    .service-card:hover { transform: translateY(-8px); border-color: var(--accent); }
+    .service-icon { width: 42px; height: 42px; border-radius: 12px; background: var(--soft); color: var(--accent); display: grid; place-items: center; font-size: .78rem; font-weight: 850; margin-bottom: 18px; transition: all 0.3s ease;}
+    .service-card:hover .service-icon { background: var(--accent); color: white; transform: rotate(10deg); }
+    .service-card h3 { font-size: 1.08rem; margin-bottom: 9px; }
+    .service-card p { color: var(--muted); font-size: .93rem; }
+
+    /* --- FIXED CONTACT SECTION --- */
+    .contact { 
+      background: #10233f; 
+      color: white; 
+      border-radius: 32px; 
+      padding: 52px; 
+      overflow: hidden; 
+      position: relative; 
+      box-shadow: 0 20px 50px rgba(0,0,0,.2); 
+      transition: background-color 0.3s ease;
+    }
+    .contact:after { content: ""; position: absolute; width: 300px; height: 300px; border-radius: 50%; border: 60px solid rgba(255,255,255,.045); right: -90px; top: -120px; transition: transform 0.8s ease;}
+    .contact:hover:after { transform: scale(1.1) rotate(15deg); }
+    .contact h2 { max-width: 650px; color: white; }
+    .contact p { color: #b8c6d8; max-width: 600px; margin-top: 14px; }
+    .contact-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; position: relative; z-index: 2; }
+    .contact .btn-light { border: none; color: #10233f; background: #fff; }
+    .contact .btn-light:hover { background: var(--accent); color: white; }
+
+    [data-theme="dark"] .contact { background: #1e293b; }
+    [data-theme="dark"] .contact p { color: #94a3b8; }
+    [data-theme="dark"] .contact .btn-light { background: #0f172a; color: #f8fafc; border: 1px solid #334155; }
+    [data-theme="dark"] .contact .btn-light:hover { background: var(--accent); border-color: var(--accent); color: white; }
+
+    /* Testimonials */
+    .testimonials-grid { display: grid; grid-template-columns: 1fr; gap: 18px; max-width: 600px; }
+    .testimonial-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); opacity: 0; transform: translateY(22px); transition: transform 0.3s ease, border-color 0.3s ease; }
+    .testimonial-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+    .is-visible.testimonial-card { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
+    .testimonial-img { width: 100%; border-radius: 12px; margin-bottom: 20px; }
+    .client-info { display: flex; align-items: center; gap: 16px; direction: rtl; text-align: right; }
+    .client-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--soft); color: var(--accent); display: grid; place-items: center; font-weight: 800; font-size: 1.2rem; }
+    .client-details h3 { font-size: 1.1rem; margin-bottom: 2px; color: var(--ink); }
+    .client-details p { color: var(--muted); font-size: .9rem; }
+    @media(min-width: 850px) { .testimonials-grid { max-width: 50%; } }
+
+    footer { padding: 28px 0 38px; color: var(--muted); font-size: .85rem; text-align: center; transition: var(--transition); }
+
+    /* Animations */
+    .reveal { opacity: 0; transform: translateY(28px); animation: none; }
+    .reveal.is-visible { animation: rise .75s cubic-bezier(.2,.7,.2,1) both; }
+    .hero-card.is-visible { animation: floatIn .9s cubic-bezier(.2,.7,.2,1) both; }
+    .skill-card, .project, .edu-card, .service-card { opacity: 0; transform: translateY(22px); }
+    .is-visible.skill-card, .is-visible.project, .is-visible.edu-card, .is-visible.service-card { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
+    
+    @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+    @keyframes floatIn { from { opacity: 0; transform: translateY(25px) rotate(5deg) scale(.97); } to { opacity: 1; transform: translateY(0) rotate(1.2deg) scale(1); } }
+    @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto!important; } .reveal, .skill-card, .project, .edu-card, .service-card, .global-bg-grid, .bg-bar { animation: none!important; opacity: 1!important; transform: none!important; transition: none!important; } }
+
+    /* Responsive */
+    @media(max-width:850px) {
+      .hero-grid, .about, .project-grid, .education { grid-template-columns: 1fr; }
+      .hero { padding-top: 55px; }
+      .hero-card { max-width: 520px; margin: auto; transform: none; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .section-head { display: block; }
+      .section-note { margin-top: 12px; }
+      .project-image { min-height: 300px; }
+      .global-bg-chart { opacity: 0.08; } /* تعديل طفيف للموبايل */
+    }
+    @media(max-width:620px) {
+      .container { width: min(calc(100% - 28px), var(--max)); }
+      .links { display: none; }
+      .nav-inner { height: 64px; }
+      section { padding: 58px 0; }
+      .hero { padding: 42px 0 50px; }
+      h1 { font-size: clamp(3rem, 17vw, 4.4rem); }
+      .hero-copy { font-size: 1rem; }
+      .about-label, .about-text, .skill-card, .project-content, .edu-card { padding: 24px; }
+      .contact { padding: 30px 24px; border-radius: 24px; }
+      .project-image { padding: 12px; min-height: 220px; }
+      .btn { width: 100%; }
+      .hero-actions, .contact-actions { display: grid; grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  
+  <!-- تم نقل الخلفية المتحركة هنا لتغطي الموقع بالكامل -->
+  <div class="global-bg">
+    <div class="global-bg-grid"></div>
+    <div class="global-bg-chart">
+      <div class="bg-bar"></div>
+      <div class="bg-bar"></div>
+      <div class="bg-bar"></div>
+      <div class="bg-bar"></div>
+      <div class="bg-bar"></div>
+      <div class="bg-bar"></div>
+    </div>
+  </div>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top">ESLAM <span>ALAA</span></a>
+      <div class="nav-right">
+        <nav class="links" aria-label="Main navigation">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#education">Education</a>
+          <a href="#services">Services</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
+          <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display: none;">
+            <path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM7.5 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM18.894 6.166a.75.75 0 0 0-1.06-1.06l-1.591 1.59a.75.75 0 1 0 1.06 1.061l1.591-1.59ZM21.75 12a.75.75 0 0 1-.75.75h-2.25a.75.75 0 0 1 0-1.5H21a.75.75 0 0 1 .75.75ZM17.834 18.894a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 1 0-1.061 1.06l1.59 1.591ZM12 18a.75.75 0 0 1 .75.75V21a.75.75 0 0 1-1.5 0v-2.25A.75.75 0 0 1 12 18ZM7.758 17.303a.75.75 0 0 0-1.061-1.06l-1.591 1.59a.75.75 0 0 0 1.06 1.061l1.591-1.59ZM6 12a.75.75 0 0 1-.75.75H3a.75.75 0 0 1 0-1.5h2.25A.75.75 0 0 1 6 12ZM6.697 7.757a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 0 0-1.061 1.06l1.59 1.591Z" />
+          </svg>
+          <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M9.528 1.718a.75.75 0 0 1 .162.819A8.97 8.97 0 0 0 9 6a9 9 0 0 0 9 9 8.97 8.97 0 0 0 3.463-.69.75.75 0 0 1 .981.98 10.503 10.503 0 0 1-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 0 1 .818.162Z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <div class="eyebrow">DATA ANALYST PORTFOLIO</div>
+          <h1>Eslam<br><span>Alaa</span></h1>
+          <p class="hero-copy">
+            I help businesses unlock actionable insights through data.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#projects">View Projects</a>
+            <a class="btn btn-light" href="mailto:eslamalaa333999@gmail.com">Email Me</a>
+            <a class="btn btn-light" href="https://drive.google.com/file/d/1rc9jgPtaz407Ug_lLn8nM_cZ3kbhMBbo/view?usp=drive_link" target="_blank" rel="noopener">Download CV</a>
+            <a class="btn btn-light" href="https://www.linkedin.com/in/eslam-alaa-a3b399332/" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
+        <div class="hero-card reveal">
+          <img src="assets/profile.jpg" alt="Eslam Alaa">
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="kicker">01 / About</div><h2>About Me</h2></div>
+        </div>
+        <div class="about">
+          <div class="about-label">Passionate<br><span>Data Analyst</span></div>
+         <div class="about-text">
+  <strong>Data Analyst & Software Engineering Undergraduate</strong> bridging the gap between complex data and business strategy. 
+  I combine software engineering principles with advanced analytics to deliver end-to-end data processing and interactive dashboards that drive real decision-making.<br><br>
+  Proficient in <strong>SQL, Python, Power BI, and C#</strong>, I am comfortable building robust system architectures, relational database designs, and presenting actionable insights backed by strong algorithmic problem-solving skills.
+</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="kicker">02 / Skills</div><h2>Skills</h2></div>
+        </div>
+        <div class="skills-grid">
+          <article class="skill-card">
+            <h3>Programming Languages</h3>
+            <div class="skill-list">
+              <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">SQLite</span><span class="tag">C#</span>
+            </div>
+          </article>
+          <article class="skill-card">
+            <h3>Data Visualization</h3>
+            <div class="skill-list">
+              <span class="tag">Power BI</span><span class="tag">Tableau</span><span class="tag">DAX</span>
+            </div>
+          </article>
+          <article class="skill-card">
+            <h3>Data Processing</h3>
+            <div class="skill-list">
+              <span class="tag">Data Cleaning &amp; Preprocessing</span>
+              <span class="tag">Exploratory Data Analysis</span>
+              <span class="tag">Relational Database Design</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="kicker">04 / Education</div><h2>Education</h2></div>
+        </div>
+        <div class="education">
+          <article class="edu-card">
+            <div class="date">2023 — 2027</div>
+            <h3>Bachelor of Computers and Information</h3>
+            <p>Assiut National University</p>
+          </article>
+          <article class="edu-card">
+            <div class="date">Expected: Dec 2026</div>
+            <h3>Digital Egypt Pioneers Initiative (DEPI)</h3>
+            <p>Professional Data Analysis Track (MCIT)</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="kicker">05 / Services</div><h2>Offered Services</h2></div>
+        </div>
+        <div class="services-grid">
+          <article class="service-card"><div class="service-icon">01</div><h3>Data Cleaning &amp; Preprocessing</h3><p>Clean, organize, and prepare datasets for reliable analysis.</p></article>
+          <article class="service-card"><div class="service-icon">02</div><h3>Exploratory Data Analysis</h3><p>Explore patterns, trends, relationships, and anomalies to uncover useful insights.</p></article>
+          <article class="service-card"><div class="service-icon">03</div><h3>Data Visualization</h3><p>Turn complex data into clear, meaningful visualizations that are easy to understand.</p></article>
+          <article class="service-card"><div class="service-icon">04</div><h3>Power BI Dashboards</h3><p>Build interactive dashboards focused on KPIs, trends, and decision-making.</p></article>
+          <article class="service-card"><div class="service-icon">05</div><h3>SQL Data Analysis</h3><p>Query and analyze relational data to answer business questions and extract insights.</p></article>
+          <article class="service-card"><div class="service-icon">06</div><h3>Actionable Insights</h3><p>Present findings in a clear way and translate analysis into practical recommendations.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="kicker">06 / Projects</div><h2>Selected Projects</h2></div>
+        </div>
+
+        <article class="project">
+          <div class="project-grid">
+            <div class="project-content">
+              <div class="project-number">PROJECT 01</div>
+              <h3>IBM HR Attrition Analysis — Power BI Dashboard</h3>
+              <p>
+                An end-to-end data analysis project to identify key drivers behind employee attrition.
+                The analysis revealed that attrition is heavily concentrated among young employees in the R&amp;D department, primarily driven by lower average monthly income.
+              </p>
+              <div class="project-meta">
+                <div class="meta-row"><strong>Tools:</strong> Power BI</div>
+                <div class="meta-row"><strong>Analysis:</strong> Data Cleaning, EDA, KPI Tracking</div>
+              </div>
+              <a class="project-link" href="https://github.com/eslam-alaa240/Employee_Data_Analysis" target="_blank" rel="noopener">View GitHub Repository →</a>
+            </div>
+            <div class="project-image">
+              <a href="https://drive.google.com/file/d/1T688q_avP8AZJRAhQ69SxhPuCzM2wQDt/view?usp=sharing" target="_blank" rel="noopener"><img src="https://drive.google.com/thumbnail?id=1T688q_avP8AZJRAhQ69SxhPuCzM2wQDt&sz=w1600" alt="IBM HR Attrition Analysis dashboard"></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project">
+          <div class="project-grid">
+            <div class="project-content">
+              <div class="project-number">PROJECT 02</div>
+              <h3>IBM HR Employee Attrition Analysis — Python EDA</h3>
+              <p>
+                With an employee turnover rate of 16.1% exceeding industry benchmarks, this project tackles the critical business challenge of talent retention and rising recruitment costs.
+                I conducted a comprehensive exploratory data analysis (EDA) on 1,470 employee records.
+              </p>
+              <div class="project-meta">
+                <div class="meta-row"><strong>Tools:</strong> Python (Pandas, NumPy, Matplotlib, Seaborn), Jupyter Notebook</div>
+                <div class="meta-row"><strong>Analysis:</strong> Data Cleaning, EDA, Correlation Analysis, KPI Dashboard.</div>
+              </div>
+              <a class="project-link" href="https://github.com/eslam-alaa240/IBM-HR-Attrition-Analysis" target="_blank" rel="noopener">View GitHub Repository →</a>
+            </div>
+            <div class="project-image">
+              <a href="https://drive.google.com/file/d/10LoQpctx8gk3mtAZLh3JGxOWh6m0hbMA/view?usp=sharing" target="_blank" rel="noopener"><img src="https://drive.google.com/thumbnail?id=10LoQpctx8gk3mtAZLh3JGxOWh6m0hbMA&sz=w1600" alt="IBM HR Employee Attrition Executive Dashboard"></a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="kicker">07 / Testimonials</div><h2>Client Feedback</h2></div>
+        </div>
+        <div class="testimonials-grid">
+          <article class="testimonial-card">
+            <img src="assets/feedback.jpg" alt="Feedback from Ahmed Walid" class="testimonial-img">
+            <div class="client-info">
+              <div class="client-avatar">أ</div>
+              <div class="client-details">
+                <h3>أ. أحمد وليد</h3>
+                <p>Client</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+      <div class="container">
+        <div class="contact">
+          <div class="kicker" style="color:#7db4ff">08 / Contact</div>
+          <h2>Let's turn data into insights.</h2>
+          <p>For opportunities, collaboration, or data analysis projects, feel free to reach out.</p>
+          <div class="contact-actions">
+            <a class="btn btn-light" href="mailto:eslamalaa333999@gmail.com">eslamalaa333999@gmail.com</a>
+            <a class="btn btn-light" href="https://www.linkedin.com/in/eslam-alaa-a3b399332/" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn btn-light" href="https://github.com/eslam-alaa240" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © Eslam Alaa · Data Analyst Portfolio
+  </footer>
+
+  <script>
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const sunIcon = document.getElementById('sun-icon');
+    const moonIcon = document.getElementById('moon-icon');
+    
+const currentTheme = localStorage.getItem('theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "dark");    
+    if (currentTheme === 'dark') {
+      document.body.setAttribute('data-theme', 'dark');
+      sunIcon.style.display = 'block';
+      moonIcon.style.display = 'none';
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      let theme = document.body.getAttribute('data-theme');
+      if (theme === 'dark') {
+        document.body.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      } else {
+        document.body.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+      }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal, .skill-card, .project, .edu-card, .service-card, .testimonial-card').forEach((el, i) => {
+      el.style.animationDelay = `${(i % 4) * 80}ms`;
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
