@@ -247,7 +247,7 @@
     [data-theme="dark"] .contact .btn-light:hover { background: var(--accent); border-color: var(--accent); color: white; }
 
     /* Testimonials */
-    .testimonials-grid { display: grid; grid-template-columns: 1fr; gap: 18px; max-width: 600px; }
+    .testimonials-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
     .testimonial-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); opacity: 0; transform: translateY(22px); transition: transform 0.3s ease, border-color 0.3s ease; }
     .testimonial-card:hover { transform: translateY(-5px); border-color: var(--accent); }
     .is-visible.testimonial-card { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
@@ -256,7 +256,7 @@
     .client-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--soft); color: var(--accent); display: grid; place-items: center; font-weight: 800; font-size: 1.2rem; }
     .client-details h3 { font-size: 1.1rem; margin-bottom: 2px; color: var(--ink); }
     .client-details p { color: var(--muted); font-size: .9rem; }
-    @media(min-width: 850px) { .testimonials-grid { max-width: 50%; } }
+    @media(max-width: 850px) { .testimonials-grid { grid-template-columns: 1fr; } }
 
     footer { padding: 28px 0 38px; color: var(--muted); font-size: .85rem; text-align: center; transition: var(--transition); }
 
@@ -478,7 +478,7 @@
               <a class="project-link" href="https://github.com/eslam-alaa240/Employee_Data_Analysis" target="_blank" rel="noopener">View GitHub Repository →</a>
             </div>
             <div class="project-image">
-              <a href="https://drive.google.com/file/d/1T688q_avP8AZJRAhQ69SxhPuCzM2wQDt/view?usp=sharing" target="_blank" rel="noopener"><img src="https://drive.google.com/thumbnail?id=1T688q_avP8AZJRAhQ69SxhPuCzM2wQDt&sz=w1600" alt="IBM HR Attrition Analysis dashboard"></a>
+              <a href="assets/project1.jpg" target="_blank" rel="noopener"><img src="assets/project1.jpg" alt="IBM HR Attrition Analysis dashboard"></a>
             </div>
           </div>
         </article>
@@ -499,7 +499,7 @@
               <a class="project-link" href="https://github.com/eslam-alaa240/IBM-HR-Attrition-Analysis" target="_blank" rel="noopener">View GitHub Repository →</a>
             </div>
             <div class="project-image">
-              <a href="https://drive.google.com/file/d/10LoQpctx8gk3mtAZLh3JGxOWh6m0hbMA/view?usp=sharing" target="_blank" rel="noopener"><img src="https://drive.google.com/thumbnail?id=10LoQpctx8gk3mtAZLh3JGxOWh6m0hbMA&sz=w1600" alt="IBM HR Employee Attrition Executive Dashboard"></a>
+              <a href="assets/project2.jpg" target="_blank" rel="noopener"><img src="assets/project2.jpg" alt="IBM HR Employee Attrition Executive Dashboard"></a>
             </div>
           </div>
         </article>
@@ -519,6 +519,17 @@
               <div class="client-avatar">أ</div>
               <div class="client-details">
                 <h3>أ. أحمد وليد</h3>
+                <p>Client</p>
+              </div>
+            </div>
+          </article>
+          
+          <article class="testimonial-card">
+            <img src="assets/feedback2.jpg" alt="Second Client Feedback" class="testimonial-img">
+            <div class="client-info">
+              <div class="client-avatar">ع</div>
+              <div class="client-details">
+                <h3>عميل</h3>
                 <p>Client</p>
               </div>
             </div>
