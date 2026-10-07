@@ -7,15 +7,16 @@
   <title>Eslam Alaa | Data Analyst</title>
   <style>
     :root {
-      --bg: #ffffff;
+      --bg: #f7f9fc;
       --surface: #ffffff;
       --ink: #10233f;
       --muted: #61708a;
       --accent: #2563eb;
       --accent-2: #0ea5e9;
       --line: #e4eaf2;
-      --soft: #f8fafc;
+      --soft: #eef5ff;
       --shadow: 0 18px 50px rgba(16,35,63,.08);
+      --nav-bg: rgba(247,249,252,.88);
       --radius: 24px;
       --max: 1120px;
       --transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
@@ -32,6 +33,7 @@
       --line: #334155;
       --soft: #334155;
       --shadow: 0 18px 50px rgba(0,0,0,0.4);
+      --nav-bg: rgba(15,23,42,.88);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,149 +48,113 @@
     img { max-width: 100%; display: block; }
     .container { width: min(calc(100% - 40px), var(--max)); margin: auto; position: relative; z-index: 2; }
     
-    /* --- Navigation (Fixed Dark Navy) --- */
+    /* --- Global Animated Background --- */
+    .global-bg {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .global-bg-grid {
+      position: absolute; top: 0; left: -50%; width: 200%; height: 100%;
+      background-image: 
+        linear-gradient(rgba(37, 99, 235, 0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37, 99, 235, 0.09) 1px, transparent 1px);
+      background-size: 40px 40px;
+      transform: perspective(600px) rotateX(60deg) translateY(-50px) translateZ(-200px);
+      animation: gridMove 20s linear infinite;
+    }
+    [data-theme="dark"] .global-bg-grid { opacity: 0.4; }
+
+    @keyframes gridMove {
+      0% { transform: perspective(600px) rotateX(60deg) translateY(0) translateZ(-200px); }
+      100% { transform: perspective(600px) rotateX(60deg) translateY(40px) translateZ(-200px); }
+    }
+
+    .global-bg-chart {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
+      display: flex; align-items: flex-end; justify-content: space-around;
+      padding: 0 5%; opacity: 0.12; 
+    }
+    [data-theme="dark"] .global-bg-chart { opacity: 0.08; }
+    
+    .bg-bar {
+      width: 8%; background: var(--accent); border-radius: 12px 12px 0 0;
+      animation: bgChartPulse 4s ease-in-out infinite alternate;
+      transform-origin: bottom;
+    }
+    .bg-bar:nth-child(1) { height: 30%; animation-delay: 0s; }
+    .bg-bar:nth-child(2) { height: 70%; animation-delay: -1s; }
+    .bg-bar:nth-child(3) { height: 45%; animation-delay: -2s; }
+    .bg-bar:nth-child(4) { height: 90%; animation-delay: -0.5s; }
+    .bg-bar:nth-child(5) { height: 60%; animation-delay: -1.5s; }
+    .bg-bar:nth-child(6) { height: 80%; animation-delay: -3s; }
+    
+    @keyframes bgChartPulse {
+      0% { transform: scaleY(0.7); }
+      100% { transform: scaleY(1.1); }
+    }
+
+    /* Navigation */
     .nav {
       position: sticky; top: 0; z-index: 50;
-      background: rgba(3, 11, 27, 0.95) !important;
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+      background: var(--nav-bg); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      transition: var(--transition);
     }
     .nav-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; }
-    .brand { font-weight: 800; letter-spacing: -.03em; font-size: 1.1rem; color: #ffffff !important; }
-    .brand span { color: #3b82f6 !important; }
+    .brand { font-weight: 800; letter-spacing: -.03em; font-size: 1.1rem; }
+    .brand span { color: var(--accent); }
     
     .nav-right { display: flex; align-items: center; gap: 28px; }
-    .links { display: flex; gap: 28px; font-size: .92rem; color: #94a3b8 !important; }
+    .links { display: flex; gap: 28px; font-size: .92rem; color: var(--muted); }
     .links a { transition: color 0.3s ease; position: relative; }
-    .links a:hover { color: #3b82f6 !important; }
+    .links a:hover { color: var(--accent); }
     .links a::after {
       content: ''; position: absolute; width: 0; height: 2px;
-      bottom: -4px; left: 0; background-color: #3b82f6;
+      bottom: -4px; left: 0; background-color: var(--accent);
       transition: width 0.3s ease;
     }
     .links a:hover::after { width: 100%; }
 
     /* Dark Mode Toggle Button */
     .theme-toggle {
-      background: rgba(255,255,255,0.1) !important; border: 1px solid rgba(255,255,255,0.05) !important;
-      color: #fff !important; cursor: pointer; border-radius: 50%;
+      background: var(--soft); border: 1px solid var(--line);
+      color: var(--accent); cursor: pointer; border-radius: 50%;
       width: 40px; height: 40px; display: grid; place-items: center;
       transition: var(--transition);
     }
-    .theme-toggle:hover { transform: scale(1.05); background: rgba(255,255,255,0.2) !important; }
+    .theme-toggle:hover { transform: scale(1.05); }
     .theme-toggle svg { width: 20px; height: 20px; fill: currentColor; }
 
-    /* --- NEW HERO SECTION (Fixed Dark Color) --- */
-    .hero { 
-      padding: 80px 0 0px; 
-      background-color: #030b1b !important; /* لون كحلي ثابت */
-      position: relative; 
-      overflow: hidden; 
+    /* Hero Section */
+    .hero { padding: 86px 0 70px; position: relative; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 64px; align-items: center; position: relative; z-index: 2; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      color: var(--accent); font-weight: 750; font-size: .88rem; margin-bottom: 18px;
     }
+    .eyebrow:before { content: ""; width: 28px; height: 2px; background: var(--accent); border-radius: 2px; }
+    h1 { font-size: clamp(3rem, 7vw, 5.8rem); line-height: .95; letter-spacing: -.065em; margin-bottom: 22px; }
+    h1 span { color: var(--accent); }
+    .hero-copy { font-size: 1.1rem; color: var(--muted); max-width: 620px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 12px 18px; border-radius: 12px; font-weight: 700; font-size: .92rem;
+      border: 1px solid var(--line); transition: all .3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .btn-primary:hover { transform: translateY(-4px); background: var(--accent); border-color: var(--accent); box-shadow: 0 10px 20px rgba(37,99,235,0.2); color: white; }
+    .btn-light { background: var(--surface); color: var(--ink); }
+    .btn-light:hover { transform: translateY(-4px); border-color: var(--accent); color: var(--accent); box-shadow: 0 10px 20px rgba(16,35,63,0.05); }
     
-    /* تأثير الضوء الدائري وراء النصوص */
-    .hero::before {
-      content: "";
-      position: absolute;
-      top: 0; right: 0; width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 1;
+    .hero-card {
+      position: relative; background: var(--surface); border: 1px solid var(--line);
+      border-radius: 32px; padding: 14px; box-shadow: var(--shadow); transform: rotate(1.2deg);
+      transition: transform 0.5s ease;
     }
-
-    /* --- Animated Bar Chart Background --- */
-    .hero-bars {
-      position: absolute;
-      bottom: 0; left: 0; width: 100%; height: 65%;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      padding: 0 2%;
-      opacity: 0.08; /* شفافية خفيفة عشان متبقاش مزعجة */
-      z-index: 1;
-      pointer-events: none;
-      /* دمج (Fade) من فوق عشان العواميد تظهر كأنها طالعة من العدم */
-      mask-image: linear-gradient(to bottom, transparent 0%, black 60%);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 60%);
-    }
-    .hero-bars .bar {
-      width: 6%;
-      background: #3b82f6; /* لون أزرق */
-      border-radius: 6px 6px 0 0;
-      transform-origin: bottom;
-      animation: fluctuate infinite alternate ease-in-out;
-    }
-    /* ارتفاعات وسرعات مختلفة لكل عمود عشان تبان عشوائية وحقيقية */
-    .bar-1 { height: 80%; animation-duration: 3s; animation-name: h-high; }
-    .bar-2 { height: 40%; animation-duration: 4.2s; animation-name: h-low; }
-    .bar-3 { height: 60%; animation-duration: 3.5s; animation-name: h-med; }
-    .bar-4 { height: 90%; animation-duration: 5s; animation-name: h-high; }
-    .bar-5 { height: 30%; animation-duration: 4s; animation-name: h-low; }
-    .bar-6 { height: 70%; animation-duration: 3.8s; animation-name: h-med; }
-    .bar-7 { height: 50%; animation-duration: 4.5s; animation-name: h-low; }
-    .bar-8 { height: 85%; animation-duration: 3.2s; animation-name: h-high; }
-    .bar-9 { height: 45%; animation-duration: 4.8s; animation-name: h-low; }
-    .bar-10 { height: 75%; animation-duration: 3.6s; animation-name: h-med; }
-    .bar-11 { height: 35%; animation-duration: 4.1s; animation-name: h-low; }
-    .bar-12 { height: 65%; animation-duration: 3.9s; animation-name: h-med; }
-
-    @keyframes h-high { 0% { transform: scaleY(0.7); } 100% { transform: scaleY(1); } }
-    @keyframes h-med { 0% { transform: scaleY(0.5); } 100% { transform: scaleY(1.2); } }
-    @keyframes h-low { 0% { transform: scaleY(0.3); } 100% { transform: scaleY(1.5); } }
-
+    .hero-card:hover { transform: rotate(0deg) scale(1.02); }
+    .hero-card img { border-radius: 24px; width: 100%; aspect-ratio: 4/5; object-fit: cover; }
     
-    .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; position: relative; z-index: 2; }
-    
-    .hero h1 { 
-      font-size: clamp(3rem, 6.5vw, 4.5rem); 
-      line-height: 1.1; 
-      letter-spacing: -.02em; 
-      margin-bottom: 15px; 
-      color: #ffffff !important; /* ثابت دايماً باللون الأبيض */
-      text-transform: uppercase;
-    }
-    .hero h1 span { color: #3b82f6 !important; display: block; }
-    .hero-copy { font-size: 1.1rem; color: #94a3b8 !important; max-width: 550px; margin-bottom: 35px; }
-
-    /* أزرار الـ Hero ثابتة بمعزل عن الـ Theme */
-    .hero-actions { display: flex; gap: 15px; flex-wrap: wrap; align-items: center; margin-bottom: 30px; }
-    .btn-blue {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: .95rem;
-      background: #2563eb !important; color: #ffffff !important; border: 1px solid #2563eb !important;
-      transition: all .3s ease;
-    }
-    .btn-blue:hover { transform: translateY(-3px); background: #1d4ed8 !important; border-color: #1d4ed8 !important; box-shadow: 0 10px 20px rgba(37,99,235,0.3); }
-    
-    .btn-outline {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: .95rem;
-      background: transparent !important; color: #ffffff !important; border: 1px solid rgba(255,255,255,0.2) !important;
-      transition: all .3s ease;
-    }
-    .btn-outline:hover { transform: translateY(-3px); background: rgba(255,255,255,0.05) !important; border-color: #ffffff !important; }
-
-    /* أيقونات السوشيال ميديا */
-    .hero-socials { display: flex; gap: 12px; }
-    .hero-socials a {
-      display: grid; place-items: center; width: 40px; height: 40px;
-      border-radius: 8px; background: rgba(255,255,255,0.04) !important;
-      border: 1px solid rgba(255,255,255,0.1) !important; color: #94a3b8 !important;
-      transition: all 0.3s ease;
-    }
-    .hero-socials a:hover { color: #3b82f6 !important; border-color: #3b82f6 !important; transform: translateY(-3px); }
-
-    /* صورة الـ Profile */
-    .hero-img-box {
-      position: relative; display: flex; justify-content: center; align-items: flex-end;
-      height: 100%; padding-top: 20px;
-    }
-    .hero-img-box img { 
-      max-width: 100%; max-height: 520px; object-fit: contain; 
-      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.4)); 
-      z-index: 2;
-    }
-
     /* Sections General */
     section { padding: 78px 0; position: relative; z-index: 2; }
     .section-head { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 34px; }
@@ -256,17 +222,23 @@
     .service-card h3 { font-size: 1.08rem; margin-bottom: 9px; }
     .service-card p { color: var(--muted); font-size: .93rem; }
 
-    /* FIXED CONTACT SECTION */
+    /* --- FIXED CONTACT SECTION --- */
     .contact { 
-      background: #10233f; color: white; border-radius: 32px; padding: 52px; 
-      overflow: hidden; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,.2); transition: background-color 0.3s ease;
+      background: #10233f; 
+      color: white; 
+      border-radius: 32px; 
+      padding: 52px; 
+      overflow: hidden; 
+      position: relative; 
+      box-shadow: 0 20px 50px rgba(0,0,0,.2); 
+      transition: background-color 0.3s ease;
     }
     .contact:after { content: ""; position: absolute; width: 300px; height: 300px; border-radius: 50%; border: 60px solid rgba(255,255,255,.045); right: -90px; top: -120px; transition: transform 0.8s ease;}
     .contact:hover:after { transform: scale(1.1) rotate(15deg); }
     .contact h2 { max-width: 650px; color: white; }
     .contact p { color: #b8c6d8; max-width: 600px; margin-top: 14px; }
     .contact-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; position: relative; z-index: 2; }
-    .contact .btn-light { border: none; color: #10233f; background: #fff; padding: 12px 18px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s;}
+    .contact .btn-light { border: none; color: #10233f; background: #fff; }
     .contact .btn-light:hover { background: var(--accent); color: white; }
 
     [data-theme="dark"] .contact { background: #1e293b; }
@@ -291,40 +263,66 @@
     /* Animations */
     .reveal { opacity: 0; transform: translateY(28px); animation: none; }
     .reveal.is-visible { animation: rise .75s cubic-bezier(.2,.7,.2,1) both; }
+    .hero-card.is-visible { animation: floatIn .9s cubic-bezier(.2,.7,.2,1) both; }
     .skill-card, .project, .edu-card, .service-card { opacity: 0; transform: translateY(22px); }
     .is-visible.skill-card, .is-visible.project, .is-visible.edu-card, .is-visible.service-card { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
     
     @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
-    @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto!important; } .reveal, .skill-card, .project, .edu-card, .service-card { animation: none!important; opacity: 1!important; transform: none!important; transition: none!important; } }
+    @keyframes floatIn { from { opacity: 0; transform: translateY(25px) rotate(5deg) scale(.97); } to { opacity: 1; transform: translateY(0) rotate(1.2deg) scale(1); } }
+    @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto!important; } .reveal, .skill-card, .project, .edu-card, .service-card, .global-bg-grid, .bg-bar { animation: none!important; opacity: 1!important; transform: none!important; transition: none!important; } }
 
     /* Responsive */
     @media(max-width:850px) {
       .hero-grid, .about, .project-grid, .education { grid-template-columns: 1fr; }
-      .hero-img-box { order: -1; margin-bottom: 10px; }
-      .hero-img-box img { max-height: 400px; }
+      .hero { padding-top: 55px; }
+      
+      /* --- التعديل هنا: الصورة هتظهر فوق وبحجم متناسق --- */
+      .hero-card { 
+        order: -1; 
+        max-width: 280px; 
+        margin: 0 auto 30px auto; 
+        transform: none; 
+      }
+      
       .skills-grid { grid-template-columns: 1fr; }
       .services-grid { grid-template-columns: 1fr 1fr; }
       .section-head { display: block; }
+      .section-note { margin-top: 12px; }
+      .project-image { min-height: 300px; }
+      .global-bg-chart { opacity: 0.08; }
     }
     @media(max-width:620px) {
       .container { width: min(calc(100% - 28px), var(--max)); }
       .links { display: none; }
       .nav-inner { height: 64px; }
       section { padding: 58px 0; }
-      .hero { padding: 20px 0 0px; }
-      .hero h1 { font-size: clamp(2.8rem, 12vw, 3.5rem); }
+      .hero { padding: 42px 0 50px; }
+      h1 { font-size: clamp(3rem, 17vw, 4.4rem); }
       .hero-copy { font-size: 1rem; }
       .about-label, .about-text, .skill-card, .project-content, .edu-card { padding: 24px; }
       .contact { padding: 30px 24px; border-radius: 24px; }
       .project-image { padding: 12px; min-height: 220px; }
-      .btn-blue, .btn-outline { width: 100%; }
-      .hero-actions { display: grid; grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+      .hero-actions, .contact-actions { display: grid; grid-template-columns: 1fr; }
       .services-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-<body data-theme="light">
+<body data-theme="dark">
   
+  <!-- تم نقل الخلفية المتحركة هنا لتغطي الموقع بالكامل -->
+  <div class="global-bg">
+    <div class="global-bg-grid"></div>
+    <div class="global-bg-chart">
+      <div class="bg-bar"></div>
+      <div class="bg-bar"></div>
+      <div class="bg-bar"></div>
+      <div class="bg-bar"></div>
+      <div class="bg-bar"></div>
+      <div class="bg-bar"></div>
+    </div>
+  </div>
+
   <header class="nav">
     <div class="container nav-inner">
       <a class="brand" href="#top">ESLAM <span>ALAA</span></a>
@@ -350,57 +348,22 @@
   </header>
 
   <main id="top">
-    <!-- الـ Hero مع خلفية الـ Animated Bar Chart المبرمجة بالـ CSS -->
     <section class="hero">
-      
-      <!-- أعمدة الرسم البياني المتحركة -->
-      <div class="hero-bars">
-        <div class="bar bar-1"></div>
-        <div class="bar bar-2"></div>
-        <div class="bar bar-3"></div>
-        <div class="bar bar-4"></div>
-        <div class="bar bar-5"></div>
-        <div class="bar bar-6"></div>
-        <div class="bar bar-7"></div>
-        <div class="bar bar-8"></div>
-        <div class="bar bar-9"></div>
-        <div class="bar bar-10"></div>
-        <div class="bar bar-11"></div>
-        <div class="bar bar-12"></div>
-      </div>
-
       <div class="container hero-grid">
         <div class="reveal">
-          <h1>ESLAM ALAA<br><span>DATA ANALYST</span></h1>
+          <div class="eyebrow">DATA ANALYST PORTFOLIO</div>
+          <h1>Eslam<br><span>Alaa</span></h1>
           <p class="hero-copy">
             I help businesses unlock actionable insights through data.
           </p>
-
           <div class="hero-actions">
-            <a class="btn-blue" href="https://drive.google.com/file/d/1rc9jgPtaz407Ug_lLn8nM_cZ3kbhMBbo/view?usp=drive_link" target="_blank" rel="noopener">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download CV
-            </a>
-            <a class="btn-outline" href="#projects">
-              View Projects &rarr;
-            </a>
-          </div>
-
-          <!-- أيقونات السوشيال ميديا -->
-          <div class="hero-socials">
-            <a href="https://www.linkedin.com/in/eslam-alaa-a3b399332/" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-            </a>
-            <a href="https://github.com/eslam-alaa240" target="_blank" rel="noopener" aria-label="GitHub">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-            </a>
-            <a href="mailto:eslamalaa333999@gmail.com" aria-label="Email">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/></svg>
-            </a>
+            <a class="btn btn-primary" href="#projects">View Projects</a>
+            <a class="btn btn-light" href="mailto:eslamalaa333999@gmail.com">Email Me</a>
+            <a class="btn btn-light" href="https://drive.google.com/file/d/1rc9jgPtaz407Ug_lLn8nM_cZ3kbhMBbo/view?usp=drive_link" target="_blank" rel="noopener">Download CV</a>
+            <a class="btn btn-light" href="https://www.linkedin.com/in/eslam-alaa-a3b399332/" target="_blank" rel="noopener">LinkedIn</a>
           </div>
         </div>
-        
-        <div class="hero-img-box reveal">
+        <div class="hero-card reveal">
           <img src="assets/profile.jpg" alt="Eslam Alaa">
         </div>
       </div>
@@ -583,9 +546,9 @@
           <h2>Let's turn data into insights.</h2>
           <p>For opportunities, collaboration, or data analysis projects, feel free to reach out.</p>
           <div class="contact-actions">
-            <a class="btn-light" href="mailto:eslamalaa333999@gmail.com">eslamalaa333999@gmail.com</a>
-            <a class="btn-light" href="https://www.linkedin.com/in/eslam-alaa-a3b399332/" target="_blank" rel="noopener">LinkedIn</a>
-            <a class="btn-light" href="https://github.com/eslam-alaa240" target="_blank" rel="noopener">GitHub</a>
+            <a class="btn btn-light" href="mailto:eslamalaa333999@gmail.com">eslamalaa333999@gmail.com</a>
+            <a class="btn btn-light" href="https://www.linkedin.com/in/eslam-alaa-a3b399332/" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn btn-light" href="https://github.com/eslam-alaa240" target="_blank" rel="noopener">GitHub</a>
           </div>
         </div>
       </div>
@@ -601,13 +564,11 @@
     const sunIcon = document.getElementById('sun-icon');
     const moonIcon = document.getElementById('moon-icon');
     
-    const currentTheme = localStorage.getItem('theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");    
+    const currentTheme = localStorage.getItem('theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "dark");    
     if (currentTheme === 'dark') {
       document.body.setAttribute('data-theme', 'dark');
       sunIcon.style.display = 'block';
       moonIcon.style.display = 'none';
-    } else {
-      document.body.setAttribute('data-theme', 'light');
     }
 
     themeToggleBtn.addEventListener('click', () => {
