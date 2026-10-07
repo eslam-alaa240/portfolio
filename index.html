@@ -7,14 +7,14 @@
   <title>Eslam Alaa | Data Analyst</title>
   <style>
     :root {
-      --bg: #f7f9fc;
+      --bg: #ffffff;
       --surface: #ffffff;
       --ink: #10233f;
       --muted: #61708a;
       --accent: #2563eb;
       --accent-2: #0ea5e9;
       --line: #e4eaf2;
-      --soft: #eef5ff;
+      --soft: #f8fafc;
       --shadow: 0 18px 50px rgba(16,35,63,.08);
       --radius: 24px;
       --max: 1120px;
@@ -78,26 +78,64 @@
     .theme-toggle:hover { transform: scale(1.05); background: rgba(255,255,255,0.2) !important; }
     .theme-toggle svg { width: 20px; height: 20px; fill: currentColor; }
 
-    /* --- NEW HERO SECTION --- */
+    /* --- NEW HERO SECTION (Fixed Dark Color) --- */
     .hero { 
-      padding: 60px 0 0px; 
-      background-color: #030b1b;
-      /* تم إضافة خلفية الـ bar chart هنا مع طبقة دمج عشان الكلام يفضل واضح */
-      background-image: linear-gradient(rgba(3, 11, 27, 0.85), rgba(3, 11, 27, 0.95)), url('assets/bar-chart.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      padding: 80px 0 0px; 
+      background-color: #030b1b !important; /* لون كحلي ثابت */
       position: relative; 
       overflow: hidden; 
     }
-    /* خلفية الدائرة المضيئة وراء النصوص */
+    
+    /* تأثير الضوء الدائري وراء النصوص */
     .hero::before {
       content: "";
       position: absolute;
       top: 0; right: 0; width: 600px; height: 600px;
       background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 60%);
       pointer-events: none;
+      z-index: 1;
     }
+
+    /* --- Animated Bar Chart Background --- */
+    .hero-bars {
+      position: absolute;
+      bottom: 0; left: 0; width: 100%; height: 65%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 2%;
+      opacity: 0.08; /* شفافية خفيفة عشان متبقاش مزعجة */
+      z-index: 1;
+      pointer-events: none;
+      /* دمج (Fade) من فوق عشان العواميد تظهر كأنها طالعة من العدم */
+      mask-image: linear-gradient(to bottom, transparent 0%, black 60%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 60%);
+    }
+    .hero-bars .bar {
+      width: 6%;
+      background: #3b82f6; /* لون أزرق */
+      border-radius: 6px 6px 0 0;
+      transform-origin: bottom;
+      animation: fluctuate infinite alternate ease-in-out;
+    }
+    /* ارتفاعات وسرعات مختلفة لكل عمود عشان تبان عشوائية وحقيقية */
+    .bar-1 { height: 80%; animation-duration: 3s; animation-name: h-high; }
+    .bar-2 { height: 40%; animation-duration: 4.2s; animation-name: h-low; }
+    .bar-3 { height: 60%; animation-duration: 3.5s; animation-name: h-med; }
+    .bar-4 { height: 90%; animation-duration: 5s; animation-name: h-high; }
+    .bar-5 { height: 30%; animation-duration: 4s; animation-name: h-low; }
+    .bar-6 { height: 70%; animation-duration: 3.8s; animation-name: h-med; }
+    .bar-7 { height: 50%; animation-duration: 4.5s; animation-name: h-low; }
+    .bar-8 { height: 85%; animation-duration: 3.2s; animation-name: h-high; }
+    .bar-9 { height: 45%; animation-duration: 4.8s; animation-name: h-low; }
+    .bar-10 { height: 75%; animation-duration: 3.6s; animation-name: h-med; }
+    .bar-11 { height: 35%; animation-duration: 4.1s; animation-name: h-low; }
+    .bar-12 { height: 65%; animation-duration: 3.9s; animation-name: h-med; }
+
+    @keyframes h-high { 0% { transform: scaleY(0.7); } 100% { transform: scaleY(1); } }
+    @keyframes h-med { 0% { transform: scaleY(0.5); } 100% { transform: scaleY(1.2); } }
+    @keyframes h-low { 0% { transform: scaleY(0.3); } 100% { transform: scaleY(1.5); } }
+
     
     .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; position: relative; z-index: 2; }
     
@@ -106,48 +144,48 @@
       line-height: 1.1; 
       letter-spacing: -.02em; 
       margin-bottom: 15px; 
-      color: #ffffff; 
+      color: #ffffff !important; /* ثابت دايماً باللون الأبيض */
       text-transform: uppercase;
     }
-    .hero h1 span { color: #3b82f6; display: block; }
-    .hero-copy { font-size: 1.1rem; color: #94a3b8; max-width: 550px; margin-bottom: 35px; }
+    .hero h1 span { color: #3b82f6 !important; display: block; }
+    .hero-copy { font-size: 1.1rem; color: #94a3b8 !important; max-width: 550px; margin-bottom: 35px; }
 
-    /* أزرار الـ Hero */
+    /* أزرار الـ Hero ثابتة بمعزل عن الـ Theme */
     .hero-actions { display: flex; gap: 15px; flex-wrap: wrap; align-items: center; margin-bottom: 30px; }
     .btn-blue {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: .95rem;
-      background: #2563eb; color: #ffffff; border: 1px solid #2563eb;
+      background: #2563eb !important; color: #ffffff !important; border: 1px solid #2563eb !important;
       transition: all .3s ease;
     }
-    .btn-blue:hover { transform: translateY(-3px); background: #1d4ed8; box-shadow: 0 10px 20px rgba(37,99,235,0.3); }
+    .btn-blue:hover { transform: translateY(-3px); background: #1d4ed8 !important; border-color: #1d4ed8 !important; box-shadow: 0 10px 20px rgba(37,99,235,0.3); }
     
     .btn-outline {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: .95rem;
-      background: transparent; color: #ffffff; border: 1px solid rgba(255,255,255,0.2);
+      background: transparent !important; color: #ffffff !important; border: 1px solid rgba(255,255,255,0.2) !important;
       transition: all .3s ease;
     }
-    .btn-outline:hover { transform: translateY(-3px); background: rgba(255,255,255,0.05); border-color: #ffffff; }
+    .btn-outline:hover { transform: translateY(-3px); background: rgba(255,255,255,0.05) !important; border-color: #ffffff !important; }
 
-    /* أيقونات السوشيال ميديا المربعة */
+    /* أيقونات السوشيال ميديا */
     .hero-socials { display: flex; gap: 12px; }
     .hero-socials a {
       display: grid; place-items: center; width: 40px; height: 40px;
-      border-radius: 8px; background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1); color: #94a3b8;
+      border-radius: 8px; background: rgba(255,255,255,0.04) !important;
+      border: 1px solid rgba(255,255,255,0.1) !important; color: #94a3b8 !important;
       transition: all 0.3s ease;
     }
-    .hero-socials a:hover { color: #3b82f6; border-color: #3b82f6; transform: translateY(-3px); }
+    .hero-socials a:hover { color: #3b82f6 !important; border-color: #3b82f6 !important; transform: translateY(-3px); }
 
-    /* حاوية الصورة الجديدة (بدون برواز) */
+    /* صورة الـ Profile */
     .hero-img-box {
       position: relative; display: flex; justify-content: center; align-items: flex-end;
       height: 100%; padding-top: 20px;
     }
     .hero-img-box img { 
       max-width: 100%; max-height: 520px; object-fit: contain; 
-      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5)); 
+      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.4)); 
       z-index: 2;
     }
 
@@ -262,10 +300,8 @@
     /* Responsive */
     @media(max-width:850px) {
       .hero-grid, .about, .project-grid, .education { grid-template-columns: 1fr; }
-      
       .hero-img-box { order: -1; margin-bottom: 10px; }
       .hero-img-box img { max-height: 400px; }
-      
       .skills-grid { grid-template-columns: 1fr; }
       .services-grid { grid-template-columns: 1fr 1fr; }
       .section-head { display: block; }
@@ -314,8 +350,25 @@
   </header>
 
   <main id="top">
-    <!-- التعديل كله تم هنا في قسم الـ Hero -->
+    <!-- الـ Hero مع خلفية الـ Animated Bar Chart المبرمجة بالـ CSS -->
     <section class="hero">
+      
+      <!-- أعمدة الرسم البياني المتحركة -->
+      <div class="hero-bars">
+        <div class="bar bar-1"></div>
+        <div class="bar bar-2"></div>
+        <div class="bar bar-3"></div>
+        <div class="bar bar-4"></div>
+        <div class="bar bar-5"></div>
+        <div class="bar bar-6"></div>
+        <div class="bar bar-7"></div>
+        <div class="bar bar-8"></div>
+        <div class="bar bar-9"></div>
+        <div class="bar bar-10"></div>
+        <div class="bar bar-11"></div>
+        <div class="bar bar-12"></div>
+      </div>
+
       <div class="container hero-grid">
         <div class="reveal">
           <h1>ESLAM ALAA<br><span>DATA ANALYST</span></h1>
@@ -548,7 +601,6 @@
     const sunIcon = document.getElementById('sun-icon');
     const moonIcon = document.getElementById('moon-icon');
     
-    // خليت الافتراضي light عشان الموقع يظهر زي صورتك
     const currentTheme = localStorage.getItem('theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");    
     if (currentTheme === 'dark') {
       document.body.setAttribute('data-theme', 'dark');
